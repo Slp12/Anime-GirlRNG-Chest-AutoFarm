@@ -1,51 +1,53 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-local function createWatermark()
-    local player = game.Players.LocalPlayer
-    local playerGui = player:WaitForChild("PlayerGui")
+local Window = Rayfield:CreateWindow({
+   Name = "🌸Anime Girl RNG🌸",
+   LoadingTitle = "Hello!!",
+   LoadingSubtitle = "Made By SLPGANGO",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "SLPGIRLHUB"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided",
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
 
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "WatermarkGui"
-    screenGui.Parent = playerGui
+local MainTab = Window:CreateTab("🚜Auto Farm🚜", nil) -- Title, Image
+local MainSection = MainTab:CreateSection("Farming")
 
-    local frame = Instance.new("Frame")
-    frame.Name = "WatermarkFrame"
-    frame.Size = UDim2.new(0, 200, 0, 50)
-    frame.Position = UDim2.new(1, -210, 1, -60) 
-    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    frame.BackgroundTransparency = 0.5
-    frame.Parent = screenGui
+local player = game.Players.LocalPlayer
+local autoFarmEnabled = false
+local autoFarmCoroutine
+local autoUsePotionsEnabled = false
+local autoUsePotionsCoroutine
+local fastRollEnabled = false
+local fastRollCoroutine
 
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Name = "WatermarkLabel"
-    textLabel.Text = "Created by SLPGANGO"
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    textLabel.BackgroundTransparency = 1
-    textLabel.Font = Enum.Font.SourceSans
-    textLabel.TextSize = 24
-    textLabel.Parent = frame
-end
-
-
-local targetPosition1 = Vector3.new(-5.300606727600098, 74.6999740600586, -162.92286682128906)
-local targetPosition2 = Vector3.new(362.7767028808594, 110.6999740600586, 119.02581787109375)
-local targetPosition3 = Vector3.new(327.4275207519531, 108.1999740600586, -33.93119430541992)
-local targetPosition4 = Vector3.new(289.0387268066406, 108.1999740600586, 97.39633178710938)
-
-
+-- Function to teleport the player
 local function teleportToPosition(position)
-    local player = game.Players.LocalPlayer
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
     end
 end
 
-
+-- Function to interact with the proximity prompt
 local function interactWithProximityPrompt()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    if character then
-        local rootPart = character:FindFirstChild("HumanoidRootPart")
+    if player.Character then
+        local rootPart = player.Character:FindFirstChild("HumanoidRootPart")
         if rootPart then
             for _, prompt in pairs(workspace:GetDescendants()) do
                 if prompt:IsA("ProximityPrompt") and (prompt.Parent.Position - rootPart.Position).magnitude < 10 then
@@ -60,28 +62,308 @@ local function interactWithProximityPrompt()
     end
 end
 
+-- Main Auto Farm Loop
+local function autoFarm()
+    while autoFarmEnabled do
+        teleportToPosition(Vector3.new(-5.300606727600098, 74.6999740600586, -162.92286682128906))
+        wait(3)
+        interactWithProximityPrompt()
+        wait(5)
 
-createWatermark()
+        teleportToPosition(Vector3.new(327.4275207519531, 108.1999740600586, -33.93119430541992))
+        wait(3)
+        wait(5)
 
+        teleportToPosition(Vector3.new(289.0387268066406, 108.1999740600586, 97.39633178710938))
+        wait(3)
 
-while true do
-    teleportToPosition(targetPosition1)
-    wait(3)
-    interactWithProximityPrompt()
+        teleportToPosition(Vector3.new(362.7767028808594, 110.6999740600586, 119.02581787109375))
+        wait(3)
+        interactWithProximityPrompt()
 
-    wait(5)
-
-    teleportToPosition(targetPosition3)
-    wait(3)
-
-    wait(5)
-
-    teleportToPosition(targetPosition4)
-    wait(3)
-
-    teleportToPosition(targetPosition2)
-    wait(3)
-    interactWithProximityPrompt()
-
-    wait(20)
+        wait(20)
+    end
 end
+
+-- Function to auto-use potions
+local function autoUsePotions()
+    while autoUsePotionsEnabled do
+        -- Use "Broken Dreams" potion
+        local args = {
+            [1] = "use_potion",
+            [2] = "Broken Dreams"
+        }
+        game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendEquipRequest:FireServer(unpack(args))
+        
+        -- Use "Mega Sunburst" potion
+        local args = {
+            [1] = "use_potion",
+            [2] = "Mega Sunburst"
+        }
+        game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendEquipRequest:FireServer(unpack(args))
+        
+        -- Notify the user
+        Rayfield:Notify({
+            Title = "Potion Used",
+            Content = "Using a potion...",
+            Duration = 2,
+            Image = 4483362458,
+            Actions = {
+                Ignore = {
+                    Name = "Okay!",
+                    Callback = function()
+                        print("The user tapped Okay!")
+                    end
+                }
+            },
+        })
+        
+        -- Wait for 5 minutes before using the next potion
+        wait(300)
+    end
+end
+
+-- Function to handle Fast Roll
+local function fastRoll()
+    while fastRollEnabled do
+        game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendSummonRequest:FireServer(5)
+        wait()
+    end
+end
+
+-- Function to start or stop auto farming
+local function toggleAutoFarm()
+    autoFarmEnabled = not autoFarmEnabled
+    if autoFarmEnabled then
+        Rayfield:Notify({
+            Title = "Auto Farm",
+            Content = "Auto farm enabled.",
+            Duration = 2,
+            Image = 4483362458,
+            Actions = {
+                Ignore = {
+                    Name = "Okay!",
+                    Callback = function()
+                        print("The user tapped Okay!")
+                    end
+                }
+            },
+        })
+        autoFarmCoroutine = coroutine.create(autoFarm)
+        coroutine.resume(autoFarmCoroutine)
+    else
+        Rayfield:Notify({
+            Title = "Auto Farm",
+            Content = "Auto farm disabled.",
+            Duration = 2,
+            Image = 4483362458,
+            Actions = {
+                Ignore = {
+                    Name = "Okay!",
+                    Callback = function()
+                        print("The user tapped Okay!")
+                    end
+                }
+            },
+        })
+        if autoFarmCoroutine then
+            coroutine.yield(autoFarmCoroutine)
+            autoFarmCoroutine = nil
+        end
+    end
+end
+
+-- Integration with the toggle for auto farm
+local Toggle = MainTab:CreateToggle({
+   Name = "Chest Farm",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+       autoFarmEnabled = Value
+       if autoFarmEnabled then
+           Rayfield:Notify({
+               Title = "Auto Farm",
+               Content = "Auto farm enabled.",
+               Duration = 2,
+               Image = 4483362458,
+               Actions = {
+                   Ignore = {
+                       Name = "Okay!",
+                       Callback = function()
+                           print("The user tapped Okay!")
+                       end
+                   }
+               },
+           })
+           autoFarmCoroutine = coroutine.create(autoFarm)
+           coroutine.resume(autoFarmCoroutine)
+       else
+           Rayfield:Notify({
+               Title = "Auto Farm",
+               Content = "Auto farm disabled.",
+               Duration = 2,
+               Image = 4483362458,
+               Actions = {
+                   Ignore = {
+                       Name = "Okay!",
+                       Callback = function()
+                           print("The user tapped Okay!")
+                       end
+                   }
+               },
+           })
+           if autoFarmCoroutine then
+               coroutine.yield(autoFarmCoroutine)
+               autoFarmCoroutine = nil
+           end
+       end
+   end,
+})
+
+local Section = MainTab:CreateSection("⚗️Potions⚗️")
+
+-- Button to buy "Broken Dreams" potion
+local Button = MainTab:CreateButton({
+   Name = "Buy Broken Dreams Potion ✅",
+   Callback = function()
+       local args = {
+           [1] = "Broken Dreams"
+       }
+       game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendPurchaseRequest:FireServer(unpack(args))
+       Rayfield:Notify({
+           Title = "Purchase",
+           Content = "Purchased Broken Dreams Potion.",
+           Duration = 2,
+           Image = 4483362458,
+           Actions = {
+               Ignore = {
+                   Name = "Okay!",
+                   Callback = function()
+                       print("The user tapped Okay!")
+                   end
+               }
+           },
+       })
+   end,
+})
+
+-- Button to buy "Mega Sunburst" potion
+local Button = MainTab:CreateButton({
+   Name = "Buy Mega Sunburst Potion ✅",
+   Callback = function()
+       local args = {
+           [1] = "Mega Sunburst"
+       }
+       game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendPurchaseRequest:FireServer(unpack(args))
+       Rayfield:Notify({
+           Title = "Purchase",
+           Content = "Purchased Mega Sunburst Potion.",
+           Duration = 2,
+           Image = 4483362458,
+           Actions = {
+               Ignore = {
+                   Name = "Okay!",
+                   Callback = function()
+                       print("The user tapped Okay!")
+                   end
+               }
+           },
+       })
+   end,
+})
+
+-- Integration with the toggle for auto-use potions
+local Toggle = MainTab:CreateToggle({
+   Name = "⚗️Auto Use Potions⚗️",
+   CurrentValue = false,
+   Flag = "Toggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+       autoUsePotionsEnabled = Value
+       if autoUsePotionsEnabled then
+           Rayfield:Notify({
+               Title = "Auto Use Potions",
+               Content = "Auto use potions enabled.",
+               Duration = 2,
+               Image = 4483362458,
+               Actions = {
+                   Ignore = {
+                       Name = "Okay!",
+                       Callback = function()
+                           print("The user tapped Okay!")
+                       end
+                   }
+               },
+           })
+           autoUsePotionsCoroutine = coroutine.create(autoUsePotions)
+           coroutine.resume(autoUsePotionsCoroutine)
+       else
+           Rayfield:Notify({
+               Title = "Auto Use Potions",
+               Content = "Auto use potions disabled.",
+               Duration = 2,
+               Image = 4483362458,
+               Actions = {
+                   Ignore = {
+                       Name = "Okay!",
+                       Callback = function()
+                           print("The user tapped Okay!")
+                       end
+                   }
+               },
+           })
+           if autoUsePotionsCoroutine then
+               coroutine.yield(autoUsePotionsCoroutine)
+               autoUsePotionsCoroutine = nil
+           end
+       end
+   end,
+})
+
+local Section = MainTab:CreateSection("🔄Summon🔄")
+
+-- Integration with the toggle for Fast Roll
+local Toggle = MainTab:CreateToggle({
+   Name = "Fast Roll",
+   CurrentValue = false,
+   Flag = "Toggle3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+       fastRollEnabled = Value
+       if fastRollEnabled then
+           Rayfield:Notify({
+               Title = "Fast Roll",
+               Content = "Fast roll enabled.",
+               Duration = 2,
+               Image = 4483362458,
+               Actions = {
+                   Ignore = {
+                       Name = "Okay!",
+                       Callback = function()
+                           print("The user tapped Okay!")
+                       end
+                   }
+               },
+           })
+           fastRollCoroutine = coroutine.create(fastRoll)
+           coroutine.resume(fastRollCoroutine)
+       else
+           Rayfield:Notify({
+               Title = "Fast Roll",
+               Content = "Fast roll disabled.",
+               Duration = 2,
+               Image = 4483362458,
+               Actions = {
+                   Ignore = {
+                       Name = "Okay!",
+                       Callback = function()
+                           print("The user tapped Okay!")
+                       end
+                   }
+               },
+           })
+           if fastRollCoroutine then
+               coroutine.yield(fastRollCoroutine)
+               fastRollCoroutine = nil
+           end
+       end
+   end,
+})
