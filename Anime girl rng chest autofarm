@@ -1,22 +1,25 @@
--- Create the watermark
+-- Create the watermark pop-up
 local function createWatermark()
     local player = game.Players.LocalPlayer
     local playerGui = player:WaitForChild("PlayerGui")
 
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "WatermarkGui"
-    screenGui.Parent = playerGui
+    local frame = Instance.new("Frame")
+    frame.Name = "WatermarkFrame"
+    frame.Size = UDim2.new(0, 200, 0, 50)
+    frame.Position = UDim2.new(1, -210, 0, 10)
+    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    frame.BackgroundTransparency = 0.5
+    frame.Parent = playerGui
 
     local textLabel = Instance.new("TextLabel")
     textLabel.Name = "WatermarkLabel"
     textLabel.Text = "Created by SLPGANGO"
-    textLabel.Size = UDim2.new(0, 200, 0, 50)
-    textLabel.Position = UDim2.new(0, 10, 0, 10)
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
     textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     textLabel.BackgroundTransparency = 1
     textLabel.Font = Enum.Font.SourceSans
     textLabel.TextSize = 24
-    textLabel.Parent = screenGui
+    textLabel.Parent = frame
 end
 
 -- Define the positions to teleport to
