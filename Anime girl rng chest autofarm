@@ -108,14 +108,6 @@ local function autoUsePotions()
             Content = "Using a potion...",
             Duration = 2,
             Image = 4483362458,
-            Actions = {
-                Ignore = {
-                    Name = "Okay!",
-                    Callback = function()
-                        print("The user tapped Okay!")
-                    end
-                }
-            },
         })
         
         -- Wait for 5 minutes before using the next potion
@@ -140,14 +132,6 @@ local function toggleAutoFarm()
             Content = "Auto farm enabled.",
             Duration = 2,
             Image = 4483362458,
-            Actions = {
-                Ignore = {
-                    Name = "Okay!",
-                    Callback = function()
-                        print("The user tapped Okay!")
-                    end
-                }
-            },
         })
         autoFarmCoroutine = coroutine.create(autoFarm)
         coroutine.resume(autoFarmCoroutine)
@@ -157,14 +141,6 @@ local function toggleAutoFarm()
             Content = "Auto farm disabled.",
             Duration = 2,
             Image = 4483362458,
-            Actions = {
-                Ignore = {
-                    Name = "Okay!",
-                    Callback = function()
-                        print("The user tapped Okay!")
-                    end
-                }
-            },
         })
         if autoFarmCoroutine then
             coroutine.yield(autoFarmCoroutine)
@@ -186,14 +162,6 @@ local Toggle = MainTab:CreateToggle({
                Content = "Auto farm enabled.",
                Duration = 2,
                Image = 4483362458,
-               Actions = {
-                   Ignore = {
-                       Name = "Okay!",
-                       Callback = function()
-                           print("The user tapped Okay!")
-                       end
-                   }
-               },
            })
            autoFarmCoroutine = coroutine.create(autoFarm)
            coroutine.resume(autoFarmCoroutine)
@@ -203,14 +171,6 @@ local Toggle = MainTab:CreateToggle({
                Content = "Auto farm disabled.",
                Duration = 2,
                Image = 4483362458,
-               Actions = {
-                   Ignore = {
-                       Name = "Okay!",
-                       Callback = function()
-                           print("The user tapped Okay!")
-                       end
-                   }
-               },
            })
            if autoFarmCoroutine then
                coroutine.yield(autoFarmCoroutine)
@@ -235,14 +195,6 @@ local Button = MainTab:CreateButton({
            Content = "Purchased Broken Dreams Potion.",
            Duration = 2,
            Image = 4483362458,
-           Actions = {
-               Ignore = {
-                   Name = "Okay!",
-                   Callback = function()
-                       print("The user tapped Okay!")
-                   end
-               }
-           },
        })
    end,
 })
@@ -260,14 +212,6 @@ local Button = MainTab:CreateButton({
            Content = "Purchased Mega Sunburst Potion.",
            Duration = 2,
            Image = 4483362458,
-           Actions = {
-               Ignore = {
-                   Name = "Okay!",
-                   Callback = function()
-                       print("The user tapped Okay!")
-                   end
-               }
-           },
        })
    end,
 })
@@ -285,14 +229,6 @@ local Toggle = MainTab:CreateToggle({
                Content = "Auto use potions enabled.",
                Duration = 2,
                Image = 4483362458,
-               Actions = {
-                   Ignore = {
-                       Name = "Okay!",
-                       Callback = function()
-                           print("The user tapped Okay!")
-                       end
-                   }
-               },
            })
            autoUsePotionsCoroutine = coroutine.create(autoUsePotions)
            coroutine.resume(autoUsePotionsCoroutine)
@@ -302,14 +238,6 @@ local Toggle = MainTab:CreateToggle({
                Content = "Auto use potions disabled.",
                Duration = 2,
                Image = 4483362458,
-               Actions = {
-                   Ignore = {
-                       Name = "Okay!",
-                       Callback = function()
-                           print("The user tapped Okay!")
-                       end
-                   }
-               },
            })
            if autoUsePotionsCoroutine then
                coroutine.yield(autoUsePotionsCoroutine)
@@ -334,14 +262,6 @@ local Toggle = MainTab:CreateToggle({
                Content = "Fast roll enabled.",
                Duration = 2,
                Image = 4483362458,
-               Actions = {
-                   Ignore = {
-                       Name = "Okay!",
-                       Callback = function()
-                           print("The user tapped Okay!")
-                       end
-                   }
-               },
            })
            fastRollCoroutine = coroutine.create(fastRoll)
            coroutine.resume(fastRollCoroutine)
@@ -351,14 +271,6 @@ local Toggle = MainTab:CreateToggle({
                Content = "Fast roll disabled.",
                Duration = 2,
                Image = 4483362458,
-               Actions = {
-                   Ignore = {
-                       Name = "Okay!",
-                       Callback = function()
-                           print("The user tapped Okay!")
-                       end
-                   }
-               },
            })
            if fastRollCoroutine then
                coroutine.yield(fastRollCoroutine)
