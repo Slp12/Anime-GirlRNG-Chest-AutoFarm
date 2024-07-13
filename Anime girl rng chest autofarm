@@ -65,19 +65,19 @@ end
 -- Main Auto Farm Loop
 local function autoFarm()
     while autoFarmEnabled do
-        teleportToPosition(Vector3.new(138.8249969482422, -85.32718658447266, -264.0798034667969))
+        teleportToPosition(Vector3.new(138.8249969482422, -85.32718658447266, -264.0798034667969)) -- New Position 1
         wait(3)
         interactWithProximityPrompt()
         wait(5)
 
-        teleportToPosition(Vector3.new(18.954509735107422, -87.82718658447266, -26.414854049682617))
+        teleportToPosition(Vector3.new(18.954509735107422, -87.82718658447266, -26.414854049682617)) -- New Position 2
         wait(3)
         wait(5)
 
-        teleportToPosition(Vector3.new(150.5713653564453, -87.82718658447266, 11.388805389404297))
+        teleportToPosition(Vector3.new(150.5713653564453, -87.82718658447266, 11.388805389404297)) -- New Position 3
         wait(3)
 
-        teleportToPosition(Vector3.new(171.6957244873047, -85.32718658447266, -62.29244613647461))
+        teleportToPosition(Vector3.new(171.6957244873047, -85.32718658447266, -62.29244613647461)) -- New Position 4
         wait(3)
         interactWithProximityPrompt()
 
