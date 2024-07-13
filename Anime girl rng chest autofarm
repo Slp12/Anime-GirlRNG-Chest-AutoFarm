@@ -51,11 +51,8 @@ local function interactWithProximityPrompt()
         if rootPart then
             for _, prompt in pairs(workspace:GetDescendants()) do
                 if prompt:IsA("ProximityPrompt") and (prompt.Parent.Position - rootPart.Position).magnitude < 10 then
-                    local startTime = tick()
-                    while tick() - startTime < 2 do
-                        fireproximityprompt(prompt)
-                        wait(0.1)
-                    end
+                    fireproximityprompt(prompt, Enum.KeyCode.E) -- Simulate pressing the 'E' key
+                    wait(0.1)
                 end
             end
         end
@@ -81,9 +78,11 @@ local function autoFarm()
         wait(5)
         interactWithProximityPrompt()
 
+        teleportToPosition(Vector3.new(327.4275207519531, 108.1999740600586, -33.93119430541992)) -- Example Position 5
         wait(3)
+        interactWithProximityPrompt()
 
-        teleportToPosition(Vector3.new(327.4275207519531, 108.1999740600586, -33.93119430541992)) -- Example Position
+        teleportToPosition(Vector3.new(289.0387268066406, 108.1999740600586, 97.39633178710938)) -- Example Position 6
         wait(3)
         interactWithProximityPrompt()
 
