@@ -44,7 +44,7 @@ local function teleportToPosition(position)
     end
 end
 
--- Function to interact with the proximity prompt using the provided paths
+-- Function to interact with a specific proximity prompt
 local function interactWithProximityPrompt(promptPath)
     local prompt = loadstring("return " .. promptPath)()
     if prompt and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
@@ -69,12 +69,12 @@ local function autoFarm()
 
         teleportToPosition(Vector3.new(327.4275207519531, 108.1999740600586, -33.93119430541992))
         wait(3)
-        
+        interactWithProximityPrompt("getNil('Game', 'DataModel').Workspace.MapFolder.Obby_FloodedCaves.PromptPart.ProximityPrompt")
         wait(5)
 
         teleportToPosition(Vector3.new(289.0387268066406, 108.1999740600586, 97.39633178710938))
         wait(3)
-
+        interactWithProximityPrompt("getNil('Game', 'DataModel').Workspace.MapFolder.Obby_CrystalCaves.PromptPart.ProximityPrompt")
         wait(3)
 
         teleportToPosition(Vector3.new(362.7767028808594, 110.6999740600586, 119.02581787109375))
