@@ -89,12 +89,23 @@ end
 -- Function to auto-use potions
 local function autoUsePotions()
     while autoUsePotionsEnabled do
-         -- Use "Broken Dreams" potion
+        -- Use "Broken Dreams" potion
         local args = {
             [1] = "use_potion",
             [2] = "Broken Dreams"
         }
         game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendEquipRequest:FireServer(unpack(args))
+        
+        -- Notify the user
+        Rayfield:Notify({
+            Title = "Potion Used",
+            Content = "Using Broken Dreams potion...",
+            Duration = 2,
+            Image = 4483362458,
+        })
+        
+        -- Wait for a short duration before using the next potion
+        wait(1)
         
         -- Use "Mega Sunburst" potion
         local args = {
@@ -106,12 +117,12 @@ local function autoUsePotions()
         -- Notify the user
         Rayfield:Notify({
             Title = "Potion Used",
-            Content = "Using a potion...",
+            Content = "Using Mega Sunburst potion...",
             Duration = 2,
             Image = 4483362458,
         })
         
-        -- Wait for 5 minutes before using the next potion
+        -- Wait for 5 minutes before repeating the cycle
         wait(300)
     end
 end
