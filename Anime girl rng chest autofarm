@@ -36,6 +36,7 @@ local autoUsePotionsEnabled = false
 local autoUsePotionsCoroutine
 local fastRollEnabled = false
 local fastRollCoroutine
+local antiAfkEnabled = false
 
 -- Function to teleport the player
 local function teleportToPosition(position)
@@ -120,6 +121,33 @@ local function fastRoll()
     while fastRollEnabled do
         game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendSummonRequest:FireServer(5)
         wait()
+    end
+end
+
+-- Function to handle Anti AFK
+local function toggleAntiAfk()
+    if antiAfkEnabled then
+        -- Anti AFK Functionality
+        local virtualUser = game:GetService("VirtualUser")
+
+        game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            virtualUser:CaptureController()
+            virtualUser:ClickButton2(Vector2.new())
+        end)
+
+        Rayfield:Notify({
+            Title = "Anti AFK",
+            Content = "Anti AFK enabled.",
+            Duration = 2,
+            Image = 4483362458,
+        })
+    else
+        Rayfield:Notify({
+            Title = "Anti AFK",
+            Content = "Anti AFK disabled.",
+            Duration = 2,
+            Image = 4483362458,
+        })
     end
 end
 
@@ -277,5 +305,16 @@ local Toggle = MainTab:CreateToggle({
                fastRollCoroutine = nil
            end
        end
+   end,
+})
+
+-- Integration with the toggle for anti AFK
+local Toggle = MainTab:CreateToggle({
+   Name = "Anti AFK",
+   CurrentValue = false,
+   Flag = "Toggle4", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+       antiAfkEnabled = Value
+       toggleAntiAfk()
    end,
 })
