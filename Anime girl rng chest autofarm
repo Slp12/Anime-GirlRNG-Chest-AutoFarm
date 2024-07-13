@@ -36,7 +36,6 @@ local autoUsePotionsEnabled = false
 local autoUsePotionsCoroutine
 local fastRollEnabled = false
 local fastRollCoroutine
-local antiAfkEnabled = false
 
 -- Function to teleport the player
 local function teleportToPosition(position)
@@ -69,16 +68,22 @@ local function autoFarm()
         teleportToPosition(Vector3.new(138.8249969482422, -85.32718658447266, -264.0798034667969)) -- New Position 1
         wait(3)
         interactWithProximityPrompt()
-        wait(5)
 
         teleportToPosition(Vector3.new(18.954509735107422, -87.82718658447266, -26.414854049682617)) -- New Position 2
-        wait(3)
         wait(5)
+        interactWithProximityPrompt()
 
         teleportToPosition(Vector3.new(150.5713653564453, -87.82718658447266, 11.388805389404297)) -- New Position 3
         wait(3)
+        interactWithProximityPrompt()
 
         teleportToPosition(Vector3.new(171.6957244873047, -85.32718658447266, -62.29244613647461)) -- New Position 4
+        wait(5)
+        interactWithProximityPrompt()
+
+        wait(3)
+
+        teleportToPosition(Vector3.new(327.4275207519531, 108.1999740600586, -33.93119430541992)) -- Example Position
         wait(3)
         interactWithProximityPrompt()
 
@@ -96,17 +101,6 @@ local function autoUsePotions()
         }
         game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendEquipRequest:FireServer(unpack(args))
         
-        -- Notify the user
-        Rayfield:Notify({
-            Title = "Potion Used",
-            Content = "Using Broken Dreams potion...",
-            Duration = 2,
-            Image = 4483362458,
-        })
-        
-        -- Wait for a short duration before using the next potion
-        wait(1)
-        
         -- Use "Mega Sunburst" potion
         local args = {
             [1] = "use_potion",
@@ -117,12 +111,12 @@ local function autoUsePotions()
         -- Notify the user
         Rayfield:Notify({
             Title = "Potion Used",
-            Content = "Using Mega Sunburst potion...",
+            Content = "Using a potion...",
             Duration = 2,
             Image = 4483362458,
         })
         
-        -- Wait for 5 minutes before repeating the cycle
+        -- Wait for 5 minutes before using the next potion
         wait(300)
     end
 end
@@ -132,33 +126,6 @@ local function fastRoll()
     while fastRollEnabled do
         game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendSummonRequest:FireServer(5)
         wait()
-    end
-end
-
--- Function to handle Anti AFK
-local function toggleAntiAfk()
-    if antiAfkEnabled then
-        -- Anti AFK Functionality
-        local virtualUser = game:GetService("VirtualUser")
-
-        game:GetService("Players").LocalPlayer.Idled:Connect(function()
-            virtualUser:CaptureController()
-            virtualUser:ClickButton2(Vector2.new())
-        end)
-
-        Rayfield:Notify({
-            Title = "Anti AFK",
-            Content = "Anti AFK enabled.",
-            Duration = 2,
-            Image = 4483362458,
-        })
-    else
-        Rayfield:Notify({
-            Title = "Anti AFK",
-            Content = "Anti AFK disabled.",
-            Duration = 2,
-            Image = 4483362458,
-        })
     end
 end
 
@@ -316,16 +283,5 @@ local Toggle = MainTab:CreateToggle({
                fastRollCoroutine = nil
            end
        end
-   end,
-})
-
--- Integration with the toggle for anti AFK
-local Toggle = MainTab:CreateToggle({
-   Name = "Anti AFK",
-   CurrentValue = false,
-   Flag = "Toggle4", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-       antiAfkEnabled = Value
-       toggleAntiAfk()
    end,
 })
