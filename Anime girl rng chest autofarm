@@ -89,12 +89,12 @@ end
 -- Function to auto-use potions
 local function autoUsePotions()
     while autoUsePotionsEnabled do
-        -- Use "Broken Dreams" potion
         local args = {
-            [1] = "use_potion",
-            [2] = "Broken Dreams"
+
+    [1] = "remove",
+    [2] = "Weak Starpurge",
         }
-        game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendEquipRequest:FireServer(unpack(args))
+        game.ReplicatedStorage.CORE_RemoteEvents.SendSellRequest:FireServer(unpack(args))
         
         -- Use "Mega Sunburst" potion
         local args = {
