@@ -36,6 +36,8 @@ local autoUsePotionsEnabled = false
 local autoUsePotionsCoroutine
 local fastRollEnabled = false
 local fastRollCoroutine
+local antiAfkEnabled = false
+local antiAfkConnection
 
 -- Function to teleport the player
 local function teleportToPosition(position)
@@ -62,22 +64,22 @@ end
 -- Main Auto Farm Loop
 local function autoFarm()
     while autoFarmEnabled do
-        teleportToPosition(Vector3.new(-5.300606727600098, 74.6999740600586, -162.92286682128906))
+        teleportToPosition(Vector3.new(139.45489501953125, -85.32718658447266, -263.533447265625))
         wait(3)
         interactWithProximityPrompt("getNil('Game', 'DataModel').Workspace.MapFolder.Obby_CrystalCaves.PromptPart.ProximityPrompt")
         wait(5)
 
-        teleportToPosition(Vector3.new(327.4275207519531, 108.1999740600586, -33.93119430541992))
+        teleportToPosition(Vector3.new(18.52592658996582, -87.82718658447266, -26.418466567993164))
         wait(3)
         interactWithProximityPrompt("getNil('Game', 'DataModel').Workspace.MapFolder.Obby_FloodedCaves.PromptPart.ProximityPrompt")
         wait(5)
 
-        teleportToPosition(Vector3.new(289.0387268066406, 108.1999740600586, 97.39633178710938))
+        teleportToPosition(Vector3.new(150.34710693359375, -87.82718658447266, 11.305421829223633))
         wait(3)
         interactWithProximityPrompt("getNil('Game', 'DataModel').Workspace.MapFolder.Obby_CrystalCaves.PromptPart.ProximityPrompt")
         wait(3)
 
-        teleportToPosition(Vector3.new(362.7767028808594, 110.6999740600586, 119.02581787109375))
+        teleportToPosition(Vector3.new(171.65078735351562, -85.32718658447266, -61.73625183105469))
         wait(3)
         interactWithProximityPrompt("getNil('Game', 'DataModel').Workspace.MapFolder.Obby_FloodedCaves.PromptPart.ProximityPrompt")
         wait(20)
@@ -119,6 +121,45 @@ local function fastRoll()
     while fastRollEnabled do
         game:GetService("ReplicatedStorage").CORE_RemoteEvents.SendSummonRequest:FireServer(5)
         wait()
+    end
+end
+
+-- Anti AFK function
+local function enableAntiAfk()
+    if not antiAfkConnection then
+        local VirtualUser = game:GetService('VirtualUser')
+        antiAfkConnection = game:GetService('Players').LocalPlayer.Idled:connect(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+            Rayfield:Notify({
+                Title = "Anti AFK",
+                Content = "Roblox tried to kick you. Anti AFK is active.",
+                Duration = 2,
+                Image = 4483362458,
+            })
+        end)
+    end
+end
+
+local function disableAntiAfk()
+    if antiAfkConnection then
+        antiAfkConnection:Disconnect()
+        antiAfkConnection = nil
+        Rayfield:Notify({
+            Title = "Anti AFK",
+            Content = "Anti AFK disabled.",
+            Duration = 2,
+            Image = 4483362458,
+        })
+    end
+end
+
+local function toggleAntiAfk()
+    antiAfkEnabled = not antiAfkEnabled
+    if antiAfkEnabled then
+        enableAntiAfk()
+    else
+        disableAntiAfk()
     end
 end
 
@@ -276,5 +317,17 @@ local Toggle = MainTab:CreateToggle({
                 fastRollCoroutine = nil
             end
         end
+    end,
+})
+
+local Section = MainTab:CreateSection("Anti AFK")
+
+-- Integration with the toggle for anti AFK
+local Toggle = MainTab:CreateToggle({
+    Name = "Anti AFK",
+    CurrentValue = false,
+    Flag = "Toggle4", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+        toggleAntiAfk()
     end,
 })
